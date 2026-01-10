@@ -1,6 +1,4 @@
-import Card from "./AgeCard";
-
-
+'use client'
 
 const AgeCategoryList = () => {
   const categories = [

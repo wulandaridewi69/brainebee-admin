@@ -11,8 +11,7 @@ const ProductList = ({ products }) => {
         const imageSrc = product.image && !product.image.includes("http") 
           ? `${apiUrl}/uploads/${product.image}` 
           : (product.image || "/assets/empty.png");
-        return <>
-          <div
+        return <div
             key={product.id}
             className="border-2 rounded-md border-zinc-300 flex flex-col items-center relative group 
               transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2 bg-white"
@@ -24,7 +23,7 @@ const ProductList = ({ products }) => {
                   src={imageSrc}
                 alt={product.title}
                 fill // Mengisi area div pembungkusnya secara otomatis
-                className="object-cover transition-transform duration-300 group-hover:scale-110"
+                className="object-cover  duration-300 group-hover:scale-110"
                 />
               </div>
 
@@ -47,7 +46,6 @@ const ProductList = ({ products }) => {
               <DeleteButton productId={product.id} />
             </div>
           </div>
-        </>
       })}
     </section>
   );

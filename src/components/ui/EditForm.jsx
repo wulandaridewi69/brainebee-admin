@@ -1,96 +1,183 @@
 "use client";
 
 import { apiUrl } from "@/config/config";
-import { useRouter } from "next/navigation"; // 1. Import useRouter
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function EditForm({ product }) {
-  const router = useRouter(); // 2. Inisialisasi router
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import TextArea from "@/components/ui/TextArea";
+import SelectInput from "@/components/ui/SelectInput";
+import Empty from "@/../public/assets/empty.png";
+
+const EditForm = ({ product }) => {
+  const router = useRouter();
+  const [form, setForm] = useState({
+      title: product.title,
+      description: product.description,
+      image: product.image,
+      price: product.price,
+      product_type: product.product_type,
+      description: product.description,
+      stock: product.stock,
+      category_id: product.category_id,
+    });
+
+  // 1. Inisialisasi Preview dengan gambar lama dari database
+  const [imagePreview, setImagePreview] = useState(
+    product.image ? `${apiUrl}/uploads/${product.image}` : null
+  );
+  const [imageFile, setImageFile] = useState(product.image ? `${apiUrl}/uploads/${product.image}` : null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 1. Ambil data dari form secara otomatis
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
+    // 1. Ambil data langsung dari Form HTML
+    const formElement = e.currentTarget;
+    const formData = new FormData(formElement);
 
-    // 2. Siapkan Headers
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    // 2. Jika ada file gambar baru, pastikan masuk ke field 'image'
+    if (imageFile) {
+      formData.set("image", imageFile);
+    }
 
-    const requestOptions = {
-      method: "PUT",
-      headers: myHeaders,
-      body: JSON.stringify(data), // Mengirim data dari form
-    };
+    try {
+      const response = await fetch(`${apiUrl}/products/${product.id}`, {
+        method: "PUT",
+        // JANGAN SET HEADERS (Content-Type), biarkan browser otomatis mengaturnya
+        body: formData,
+      });
 
+      const result = await response.json();
 
-    // 3. Gunakan ID dinamis sesuai produk
-  try {
-     const response = await fetch(`${apiUrl}/products/${product.id}`, requestOptions);
-      
       if (response.ok) {
         alert("Product updated successfully!");
-        router.push("/products"); // 3. Redirect ke halaman products
-        router.refresh(); // Opsional: supaya data di halaman tujuan langsung terupdate
+        router.push("/products");
+        router.refresh();
       } else {
-        alert("Update failed!");
+        console.error("Server error:", result);
+        alert("Update failed: " + (result.message || "Unknown error"));
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Network Error:", error);
+      alert("Something went wrong!");
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label className="block text-sm font-medium mb-2">Product Name</label>
-        <input
-          type="text"
-          name="title" // Sesuaikan name dengan kolom di DB (tadi di backend kamu pakai 'title')
-          defaultValue={product.title}
-          required
-          className="w-full px-4 py-2 border rounded-lg"
-        />
+      <div className="flex flex-col items-center">
+        <label className="cursor-pointer group">
+          <div className="relative w-[300px] h-[300px]">
+            <img
+              src={imagePreview}
+              alt="preview"
+              className="w-full h-full rounded-xl object-cover border-2 border-dashed border-gray-300 group-hover:border-blue-500 transition-all"
+            />
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-xl transition-all">
+              <span className="text-white font-bold text-sm">Ganti Gambar</span>
+            </div>
+          </div>
+
+          <Input
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={handleImageChange}
+            name="image"
+          />
+        </label>
+        <p className="text-gray-400 text-xs mt-2 italic">
+          *Klik gambar untuk mengganti
+        </p>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-2">Price</label>
-        <input
-          type="number"
-          name="price"
-          defaultValue={product.price}
-          required
-          className="w-full px-4 py-2 border rounded-lg"
-        />
-      </div>
+      <Input
+        label="Product Title"
+        name="title"
+        onChange={handleChange}
+        value={form.title}
+        required
+      />
 
-      <div>
-        <label className="block text-sm font-medium mb-2">Description</label>
-        <textarea
-          name="description"
-          defaultValue={product.description}
-          rows={4}
-          className="w-full px-4 py-2 border rounded-lg"
-        />
-      </div>
+      <TextArea
+        label="Description"
+        name="description"
+        onChange={handleChange}
+        value={form.description}
+        required
+      />
 
-      <div>
-        <label className="block text-sm font-medium mb-2">Stock</label>
-        <input
-          type="number"
+      <div className="grid grid-cols-2 gap-4">
+        <Input
+          label="Stock"
           name="stock"
-          defaultValue={product.stock}
+          type="number"
+          onChange={handleChange}
+          value={form.stock}
           required
-          className="w-full px-4 py-2 border rounded-lg"
+        />
+        <Input
+          label="Price"
+          name="price"
+          type="number"
+          onChange={handleChange}
+          value={form.price}
+          required
         />
       </div>
 
-      <button
-        type="submit"
-        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-      >
-        Update Product
-      </button>
+      <SelectInput
+        label="Product Type"
+        name="product_type"
+        onChange={handleChange}
+        value={form.product_type}
+        required
+        options={[
+          { label: "Worksheet", value: "worksheet" },
+          { label: "Coloring Page", value: "coloring_page" },
+          { label: "Flashcard", value: "flashcard" },
+          { label: "Activity Book", value: "activity_book" },
+        ]}
+      />
+
+      <SelectInput
+        label="Ages Category"
+        name="category_id"
+        onChange={handleChange}
+        value={form.category_id}
+        required
+        options={[
+          { label: "Toddler", value: 1 },
+          { label: "Preschool", value: 2 },
+          { label: "Kindergarten", value: 3 },
+          { label: "School Age", value: 4 },
+        ]}
+      />
+
+      <div className="flex justify-center pt-4">
+        <div className="w-1/2">
+          <Button type="submit" label="Update Product" />
+        </div>
+      </div>
     </form>
   );
-}
+};
+
+export default EditForm;
