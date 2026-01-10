@@ -5,10 +5,11 @@ import Poster from "@/../public/assets/hero.png";
 import Button from '@/components/ui/Button';
 
 const Hero = () => {
-    return (
-         <section className="w-full bg-gradient-to-b from-sky-100 to-white py-24">
+  return (
+    <section className="w-full bg-gradient-to-b from-sky-100 to-white py-24">
+      <Link href="/products">
       <div className="max-w-6xl mx-auto px-6 flex flex-col items-center text-center">
-        
+
         <div className="w-full flex justify-center">
           <Image
             src={Poster}
@@ -33,8 +34,10 @@ const Hero = () => {
          Create New Product      
         </Button> */}
       </div>
+      </Link>
+      
     </section>
-    )
+  )
 }
 
 export default Hero;
