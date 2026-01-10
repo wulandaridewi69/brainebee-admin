@@ -3,22 +3,19 @@ import { notFound } from "next/navigation";
 import { apiUrl } from "@/config/config";
 import tween from '@/../public/assets/tween.png';
 
-// 1. Fungsi ambil data (di luar komponen)
 async function getProduct(id) {
   const res = await fetch(`${apiUrl}/products/${id}`, {
-    cache: "no-store", // Agar data selalu terbaru
+    cache: "no-store", 
   });
 
   if (!res.ok) return null;
   return res.json();
 }
 
-// 2. Komponen Utama
 const DetailProductPage = async (props) => {
   const params = await props.params;
   const product = await getProduct(params.id);
 
-  // Jika produk tidak ditemukan di DB, tampilkan halaman 404
   if (!product) {
     notFound();
   }
@@ -26,7 +23,6 @@ const DetailProductPage = async (props) => {
   return (
     <section className="min-h-screen bg-white text-black px-6 py-16">
       <div className="max-w-3xl mx-auto">
-        {/* Gambar Produk */}
         <div className="w-full md:w-1/2">
           <Image 
             src={tween} 
@@ -35,7 +31,6 @@ const DetailProductPage = async (props) => {
           />
         </div>
 
-        {/* Info Produk */}
         <div className="w-full md:w-1/2">
           <h1 className="text-3xl font-bold text-black mb-2">
             {product.title}

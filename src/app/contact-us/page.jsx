@@ -1,4 +1,4 @@
-const ContactUs = () => {
+const contactUs = () => {
   return (
     <section className="min-h-screen bg-white text-black px-6 py-16">
       <div className="max-w-3xl mx-auto">
@@ -83,4 +83,4 @@ const ContactUs = () => {
   );
 }
 
-export default ContactUs;
+export default contactUs;

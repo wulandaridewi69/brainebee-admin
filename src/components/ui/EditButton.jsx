@@ -4,7 +4,7 @@ import Image from "next/image";
 import Pen from "@/../public/assets/pen.png";
 import { useRouter } from "next/navigation";
 
-const EditButton = ({ productId }) => {
+const editButton = ({ productId }) => {
   const router = useRouter();
 
   return (
@@ -17,4 +17,4 @@ const EditButton = ({ productId }) => {
   );
 };
 
-export default EditButton;
+export default editButton;

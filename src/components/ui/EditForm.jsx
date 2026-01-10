@@ -8,9 +8,8 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import TextArea from "@/components/ui/TextArea";
 import SelectInput from "@/components/ui/SelectInput";
-import Empty from "@/../public/assets/empty.png";
 
-const EditForm = ({ product }) => {
+const editForm = ({ product }) => {
   const router = useRouter();
   const [form, setForm] = useState({
       title: product.title,
@@ -48,11 +47,9 @@ const EditForm = ({ product }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 1. Ambil data langsung dari Form HTML
     const formElement = e.currentTarget;
     const formData = new FormData(formElement);
 
-    // 2. Jika ada file gambar baru, pastikan masuk ke field 'image'
     if (imageFile) {
       formData.set("image", imageFile);
     }
@@ -60,7 +57,6 @@ const EditForm = ({ product }) => {
     try {
       const response = await fetch(`${apiUrl}/products/${product.id}`, {
         method: "PUT",
-        // JANGAN SET HEADERS (Content-Type), biarkan browser otomatis mengaturnya
         body: formData,
       });
 
@@ -91,11 +87,11 @@ const EditForm = ({ product }) => {
               className="w-full h-full rounded-xl object-cover border-2 border-dashed border-gray-300 group-hover:border-blue-500 transition-all"
             />
             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-xl transition-all">
-              <span className="text-white font-bold text-sm">Ganti Gambar</span>
+              <span className="text-white font-bold text-sm">Change cover</span>
             </div>
           </div>
 
-          <Input
+          <input
             type="file"
             accept="image/*"
             hidden
@@ -173,11 +169,11 @@ const EditForm = ({ product }) => {
 
       <div className="flex justify-center pt-4">
         <div className="w-1/2">
-          <Button type="submit" label="Update Product" />
+          <Button type="publish" label="Update Product" />
         </div>
       </div>
     </form>
   );
 };
 
-export default EditForm;
+export default editForm;

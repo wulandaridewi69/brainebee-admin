@@ -1,6 +1,6 @@
 "use client";
 
-const SelectInput = ({ label, name, value, onChange, options = [], required = false }) => {
+const selectInput = ({ label, name, value, onChange, options = [], required = false }) => {
   return (
     <div className="flex flex-col gap-1 mb-3">
       {label && <label className="text-sm font-semibold text-black">{label}</label>}
@@ -24,4 +24,4 @@ const SelectInput = ({ label, name, value, onChange, options = [], required = fa
   );
 };
 
-export default SelectInput;
+export default selectInput;

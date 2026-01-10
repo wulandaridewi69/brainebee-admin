@@ -5,7 +5,7 @@ import Trash from "@/../public/assets/trash.png";
 import { useRouter } from "next/navigation";
 import { apiUrl } from "@/config/config";
 
-const DeleteButton = ({ productId }) => {
+const deleteButton = ({ productId }) => {
   const router = useRouter();
    
 
@@ -34,4 +34,4 @@ const DeleteButton = ({ productId }) => {
   );
 };
 
-export default DeleteButton;
+export default deleteButton;

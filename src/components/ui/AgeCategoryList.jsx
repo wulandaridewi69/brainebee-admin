@@ -7,7 +7,7 @@ import SchoolAge from "@/../public/assets/school.png";
 import Tween from "@/../public/assets/tween.png";
 import Teeneger from "@/../public/assets/teeneger.png";
 
-const AgeCategoryList = () => {
+const ageCategoryList = () => {
   const categories = [
     { title: "TODDLER", image: Toddler },
     { title: "PRESCHOOL", image: Preschool },
@@ -33,4 +33,4 @@ const AgeCategoryList = () => {
   );
 };
 
-export default AgeCategoryList;
+export default ageCategoryList;

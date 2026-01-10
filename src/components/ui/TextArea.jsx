@@ -1,6 +1,6 @@
 "use client";
 
-const TextArea = ({label, name, value, onChange, placeholder = "",required = false, rows = 6}) => {
+const textArea = ({label, name, value, onChange, placeholder = "",required = false, rows = 6}) => {
   return (
     <div className="flex flex-col gap-1 mb-3">
       {label && (
@@ -22,4 +22,4 @@ const TextArea = ({label, name, value, onChange, placeholder = "",required = fal
   );
 };
 
-export default TextArea;
+export default textArea;
