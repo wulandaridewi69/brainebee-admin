@@ -3,9 +3,11 @@
 import Image from "next/image";
 import Trash from "@/../public/assets/trash.png";
 import { useRouter } from "next/navigation";
+import { apiUrl } from "@/config/config";
 
 const DeleteButton = ({ productId }) => {
   const router = useRouter();
+   
 
   const handleDelete = async () => {
     const requestOptions = {
@@ -13,7 +15,7 @@ const DeleteButton = ({ productId }) => {
       redirect: "follow"
     };
 
-    fetch(`http://localhost:5000/api/products/${productId}`, requestOptions)
+    fetch(`${apiUrl}/products/${productId}`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         console.log(result);

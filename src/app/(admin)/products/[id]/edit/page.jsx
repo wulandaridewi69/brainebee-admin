@@ -1,22 +1,21 @@
-// app/products/[id]/edit/page.jsx
 import { notFound } from "next/navigation";
 import EditForm from "@/components/ui/EditForm";
+import { apiUrl } from "@/config/config";
 
-// 1. Tambahkan async dan await di sini
 async function getProduct(id) {
-  const res = await fetch(`http://localhost:5000/api/products/${id}`, {
-    cache: "no-store"
+  const res = await fetch(`${apiUrl}/products/${id}`, {
+    cache: "no-store",
   });
-  
+
   if (!res.ok) return null;
   return res.json();
 }
 
-export default async function EditProductPage(props) {
-  // 2. Next.js 15 mewajibkan await pada params
+const editProduct = async (props) => {
+
   const params = await props.params;
   const product = await getProduct(params.id);
-  
+
   if (!product) {
     notFound();
   }
@@ -28,3 +27,5 @@ export default async function EditProductPage(props) {
     </div>
   );
 }
+
+export default editProduct;

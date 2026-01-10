@@ -1,6 +1,11 @@
 "use client";
 
+import { apiUrl } from "@/config/config";
+import { useRouter } from "next/navigation"; // 1. Import useRouter
+
 export default function EditForm({ product }) {
+  const router = useRouter(); // 2. Inisialisasi router
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -18,11 +23,15 @@ export default function EditForm({ product }) {
       body: JSON.stringify(data), // Mengirim data dari form
     };
 
+
     // 3. Gunakan ID dinamis sesuai produk
-    try {
-      const response = await fetch(`http://localhost:5000/api/products/${product.id}`, requestOptions);
+  try {
+     const response = await fetch(`${apiUrl}/products/${product.id}`, requestOptions);
+      
       if (response.ok) {
         alert("Product updated successfully!");
+        router.push("/products"); // 3. Redirect ke halaman products
+        router.refresh(); // Opsional: supaya data di halaman tujuan langsung terupdate
       } else {
         alert("Update failed!");
       }
