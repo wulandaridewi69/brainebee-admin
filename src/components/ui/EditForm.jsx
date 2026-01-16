@@ -22,7 +22,6 @@ const editForm = ({ product }) => {
       category_id: product.category_id,
     });
 
-  // 1. Inisialisasi Preview dengan gambar lama dari database
   const [imagePreview, setImagePreview] = useState(
     product.image ? `${apiUrl}/uploads/${product.image}` : null
   );
